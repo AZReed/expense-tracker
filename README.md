@@ -26,6 +26,6 @@ The app is a simple expense tracker that allows users to track their expenses. T
 
 TODO:
 
-- [] new design
-- [] css improvements
-- [] django backend with ninja for auth and api
+- [ ] new design
+- [ ] css improvements
+- [ ] django backend with ninja for auth and api
