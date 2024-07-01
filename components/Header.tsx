@@ -7,7 +7,7 @@ import {
 import { checkUser } from '@/lib/checkUser'
 
 export default async function Header() {
-  const user = await checkUser();
+  await checkUser();
 
   return (
     <nav className="navbar">

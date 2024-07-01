@@ -4,8 +4,6 @@ import { db } from "./db";
 export async function checkUser() {
   const user = await currentUser();
 
-  console.log("USER", user);
-
   if (!user) {
     return null;
   }
@@ -20,7 +18,7 @@ export async function checkUser() {
   if (userData) {
     return userData;
   }
-
+  console.log("*** Creating user ***", userData);
   const newUser = await db.user.create({
     data: {
       clerkUserId: userId,
