@@ -14,21 +14,12 @@ interface TransactionResponse {
 }
 
 async function addTransaction(
-  formData: FormData
+  textValue: string,
+  amountValue: string | number
 ): Promise<TransactionResponse> {
-  const textValue = formData.get("text");
-  const amountValue = formData.get("amount");
-
-  const errors: string[] = [];
-  formData.forEach((value, key) => {
-    if (!value || value === "") {
-      errors.push(key);
-    }
-  });
-
-  if (errors.length > 0) {
+  if (!textValue || textValue === "" || !amountValue || amountValue === "") {
     return {
-      error: `Missing values: ${errors.join(", ")}`,
+      error: "Name and amount are required",
     };
   }
 

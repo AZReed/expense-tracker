@@ -1,8 +1,9 @@
-import Guest from '@/components/Guest'
 import { currentUser } from '@clerk/nextjs/server'
-import AddTransaction from '@/components/AddTransaction'
+
+import Guest from '@/components/Guest'
 import Balance from '@/components/Balance'
 import IncomeExpense from '@/components/IncomeExpense'
+import AddTransaction from '@/components/AddTransaction'
 import TransactionList from '@/components/TransactionList'
 
 export default async function HomePage() {
@@ -13,12 +14,12 @@ export default async function HomePage() {
   }
 
   return (
-    <main>
-      <h1>Welcome, {user.firstName}</h1>
+    <>
+      <h1 className='text-3xl text-center'>Welcome, {user.firstName}</h1>
       <Balance />
       <IncomeExpense />
       <AddTransaction />
       <TransactionList />
-    </main>
+    </>
   )
 }

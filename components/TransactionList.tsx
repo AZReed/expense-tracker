@@ -1,9 +1,11 @@
+// import { Heading } from '@radix-ui/themes';
+
 import getTransactions from "@/actions/getTransactions";
-import { TransactionResponse } from "@/types/Transaction";
+// import { TransactionResponse } from "@/types/Transaction";
 import TransactionItem from "@/components/TransactionItem";
 
 const TransactionList = async () => {
-  const { transactions, error }: TransactionResponse = await getTransactions();
+  const { transactions, error } = await getTransactions();
 
   if (error) {
     return <p className="error">{error}</p>;
@@ -11,8 +13,8 @@ const TransactionList = async () => {
 
   return (
     <>
-      <h3>History</h3>
-      <ul className="list">
+      <h1>History</h1>
+      <ul className="flex flex-col gap-4">
         {transactions?.map((transaction) => (
           <TransactionItem key={transaction.id} transaction={transaction} />
         ))}

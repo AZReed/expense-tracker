@@ -21,6 +21,8 @@ async function getTransactions(): Promise<TransactionResponse> {
       },
     });
 
+    console.log(transactions);
+
     return { transactions };
   } catch (error) {
     return { error: "Transactions could not be retrieved" };
