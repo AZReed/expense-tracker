@@ -7,8 +7,17 @@ export interface Transaction {
   updatedAt: Date;
 }
 
-// TransactionResponse returns a promise of Transaction and error if any
 export interface TransactionResponse {
-  transactions?: Transaction[];
+  data?: {
+    list: Transaction[];
+    totalCount: number;
+    currentPage: number;
+    nextPage: boolean;
+    previousPage: boolean;
+  };
   error?: string;
+}
+
+export interface TransactionFilters {
+  page?: string;
 }

@@ -4,9 +4,9 @@ import Guest from '@/components/Guest'
 import Balance from '@/components/Balance'
 import IncomeExpense from '@/components/IncomeExpense'
 import AddTransaction from '@/components/AddTransaction'
-import TransactionList from '@/components/TransactionList'
+import Transaction from '@/components/Transaction'
 
-export default async function HomePage() {
+export default async function HomePage(props: { searchParams: { page: string, search: string } }) {
   const user = await currentUser()
 
   if (!user) {
@@ -19,7 +19,7 @@ export default async function HomePage() {
       <Balance />
       <IncomeExpense />
       <AddTransaction />
-      <TransactionList />
+      <Transaction searchParams={props?.searchParams} />
     </>
   )
 }
