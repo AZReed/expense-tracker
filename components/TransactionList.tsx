@@ -1,24 +1,13 @@
 import dayjs from "dayjs";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import TransactionItem from "@/components/TransactionItem";
 import { TransactionResponse } from "@/types/Transaction";
+import TransactionItem from "@/components/TransactionItem";
+import PaginationControls from "@/components/PaginationControls";
 
 const TransactionList = ({ data, error }: TransactionResponse) => {
   if (error) {
     return <p className="error">{error}</p>;
   }
-
-  const prevPage = data?.previousPage ? `?page=${data?.currentPage - 1}` : '#'
-  const currentPage = (data?.currentPage || 0) + 1
-  const nextPage = data?.nextPage ? `?page=${data?.currentPage + 1}` : '#'
 
   return (
     <>
@@ -30,19 +19,7 @@ const TransactionList = ({ data, error }: TransactionResponse) => {
               <TransactionItem key={transaction.id} transaction={transaction} />
             ))}
           </ul>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href={prevPage} />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">{currentPage}</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href={nextPage} />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <PaginationControls data={data} />
         </div>
       ) : "No transactions found"}
     </>

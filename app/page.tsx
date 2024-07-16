@@ -13,6 +13,17 @@ export default async function HomePage(props: { searchParams: { page: string, se
     return <Guest />
   }
 
+  /* 
+  TODO:
+   - [ ] Add filter to order by different fields
+   - [ ] Add Category in the sidebar
+   - [ ] Move form to add transactions to a modal or new page or sidebar
+   - [ ] Show transactions details in the sidebar?
+   - [ ] Maybe add a search bar?
+   - [ ] Improve navigation UX
+   - [ ] Add Framer Motion
+   */
+
   return (
     <>
       <h1 className='text-3xl text-center'>Welcome, {user.firstName}</h1>

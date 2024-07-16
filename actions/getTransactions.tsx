@@ -11,20 +11,27 @@ async function getTransactions(filters: TransactionFilters): Promise<Transaction
     return { error: "User not found" };
   }
 
-  const page = parseInt(filters?.page || '0');
+  const parsedPage = parseInt(filters?.page || '0');
+
+  const page = parsedPage - 1;
 
   const take = 5;
-  const skip = filters?.page ? page * take : 0;
+  // const skip = filters?.page ? page * take : 0;
+  const skip = page * take;
+  // const skip = parsedPage * take;
 
   try {
     const [totalCount, transactions] = await db.$transaction([
-      db.transaction.count(),
+      db.transaction.count({ where: { userId } }),
       db.transaction.findMany({
         where: {
           userId,
         },
         orderBy: {
           createdAt: "desc",
+        },
+        include: {
+          category: true,
         },
         take,
         skip
@@ -35,7 +42,7 @@ async function getTransactions(filters: TransactionFilters): Promise<Transaction
       data: {
         list: transactions,
         totalCount,
-        currentPage: page,
+        currentPage: parsedPage,
         nextPage: totalCount > skip + take,
         previousPage: skip > 0
       }

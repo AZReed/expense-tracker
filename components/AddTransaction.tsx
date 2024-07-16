@@ -15,6 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import addTransaction from "@/actions/addTransaction";
 
 const formSchema = z.object({
@@ -25,8 +32,9 @@ const formSchema = z.object({
     message: "Amount cannot be zero",
   })).refine(val => val !== 0, {
     message: "Amount cannot be zero",
-  })
-})
+  }),
+  category: z.string(),
+});
 
 const AddTransaction = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,17 +42,17 @@ const AddTransaction = () => {
     defaultValues: {
       name: "",
       amount: 0,
+      category: "1",
     },
   });
 
   const clientAction = async (values: z.infer<typeof formSchema>) => {
-    const result = await addTransaction(values.name, values.amount);
+    const result = await addTransaction(values.name, values.amount, values.category);
 
     if (result?.error) {
       toast.error(result.error);
     } else {
       form.reset();
-      // formRef.current?.reset();
       toast.success("Transaction added");
     }
   };
@@ -79,6 +87,31 @@ const AddTransaction = () => {
                 </FormControl>
                 <FormDescription>
                   Quantity can be negative for expenses, or positive for income.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="1">Paycheck</SelectItem>
+                    <SelectItem value="2">Restaurants</SelectItem>
+                    <SelectItem value="3">Investments</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Category
                 </FormDescription>
                 <FormMessage />
               </FormItem>

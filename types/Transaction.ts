@@ -1,8 +1,14 @@
+interface Category {
+  id: string;
+  name: string;
+}
+
 export interface Transaction {
   id: string;
   text: string;
   amount: number;
   userId: string;
+  category: Category;
   createdAt: Date;
   updatedAt: Date;
 }
