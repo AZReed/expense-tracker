@@ -1,24 +1,36 @@
-import Guest from '@/components/Guest'
 import { currentUser } from '@clerk/nextjs/server'
-import AddTransaction from '@/components/AddTransaction'
+
+import Guest from '@/components/Guest'
 import Balance from '@/components/Balance'
 import IncomeExpense from '@/components/IncomeExpense'
-import TransactionList from '@/components/TransactionList'
+import AddTransaction from '@/components/AddTransaction'
+import Transaction from '@/components/Transaction'
 
-export default async function HomePage() {
+export default async function HomePage(props: { searchParams: { page: string, search: string } }) {
   const user = await currentUser()
 
   if (!user) {
     return <Guest />
   }
 
+  /* 
+  TODO:
+   - [ ] Add filter to order by different fields
+   - [ ] Add Category in the sidebar
+   - [ ] Move form to add transactions to a modal or new page or sidebar
+   - [ ] Show transactions details in the sidebar?
+   - [ ] Maybe add a search bar?
+   - [ ] Improve navigation UX
+   - [ ] Add Framer Motion
+   */
+
   return (
-    <main>
-      <h1>Welcome, {user.firstName}</h1>
+    <>
+      <h1 className='text-3xl text-center'>Welcome, {user.firstName}</h1>
       <Balance />
       <IncomeExpense />
       <AddTransaction />
-      <TransactionList />
-    </main>
+      <Transaction searchParams={props?.searchParams} />
+    </>
   )
 }

@@ -25,13 +25,23 @@ model User {
 }
 
 model Transaction {
-  id        String   @id @default(uuid())
-  text      String
-  amount    Float
-  userId    String
-  user      User     @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(uuid())
+  text       String
+  amount     Float
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  userId     String
+  user       User      @relation(fields: [userId], references: [clerkUserId], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   @@index([userId])
+}
+
+model Category {
+  id           String        @id @default(uuid())
+  name         String
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }

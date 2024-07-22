@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 interface TransactionData {
   text: string;
   amount: number;
+  categoryId: string | null;
 }
 
 interface TransactionResponse {
@@ -14,40 +15,32 @@ interface TransactionResponse {
 }
 
 async function addTransaction(
-  formData: FormData
+  textValue: string,
+  amountValue: string | number,
+  categoryValue: string
 ): Promise<TransactionResponse> {
-  const textValue = formData.get("text");
-  const amountValue = formData.get("amount");
-
-  const errors: string[] = [];
-  formData.forEach((value, key) => {
-    if (!value || value === "") {
-      errors.push(key);
-    }
-  });
-
-  if (errors.length > 0) {
-    return {
-      error: `Missing values: ${errors.join(", ")}`,
-    };
-  }
-
-  const text: string = textValue?.toString() as string;
-  const amount: number = parseFloat(amountValue?.toString() as string);
-
   const { userId } = auth();
-  // log.debug(`Adding transaction for user ${userId}`);
   if (!userId) {
     return {
       error: "User not found",
     };
   }
 
+  if (!textValue || textValue === "" || !amountValue || amountValue === "") {
+    return {
+      error: "Name and amount are required",
+    };
+  }
+
+  const text: string = textValue?.toString() as string;
+  const amount: number = parseFloat(amountValue?.toString() as string);
+
   try {
-    const transactionData: TransactionData = await db.transaction.create({
+    const transactionData = await db.transaction.create({
       data: {
         text,
         amount,
+        categoryId: categoryValue,
         userId,
       },
     });
