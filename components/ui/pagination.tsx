@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { useSearchParams } from "next/navigation"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -36,6 +37,7 @@ PaginationItem.displayName = "PaginationItem"
 
 type PaginationLinkProps = {
   isActive?: boolean
+  onPaginationChange?: (page: number | undefined) => void;
 } & Pick<ButtonProps, "size"> &
   React.ComponentProps<"a">
 
@@ -44,19 +46,41 @@ const PaginationLink = ({
   isActive,
   size = "icon",
   ...props
-}: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "outline" : "ghost",
-        size,
-      }),
-      className
-    )}
-    {...props}
-  />
-)
+}: PaginationLinkProps) => {
+  const searchParams = useSearchParams();
+
+  const handleOnClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const params = new URLSearchParams(searchParams);
+    const page = props.href?.split('=')[1];
+    if (props.href) {
+      params.set('page', page || '');
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+
+    if (props?.onPaginationChange && typeof props?.onPaginationChange === 'function') {
+      window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl);
+      props.onPaginationChange(Number(page));
+    }
+  }
+
+  return (
+    <a
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        buttonVariants({
+          variant: isActive ? "outline" : "ghost",
+          size,
+        }),
+        className
+      )}
+      {...props}
+      onClick={handleOnClick}
+    />
+  )
+}
 PaginationLink.displayName = "PaginationLink"
 
 const PaginationPrevious = ({

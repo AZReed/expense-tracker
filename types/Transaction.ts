@@ -1,6 +1,8 @@
 interface Category {
   id: string;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Transaction {
@@ -8,7 +10,7 @@ export interface Transaction {
   text: string;
   amount: number;
   userId: string;
-  category: Category;
+  category: Category | null;
   createdAt: Date;
   updatedAt: Date;
 }

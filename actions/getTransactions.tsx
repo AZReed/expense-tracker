@@ -11,14 +11,12 @@ async function getTransactions(filters: TransactionFilters): Promise<Transaction
     return { error: "User not found" };
   }
 
-  const parsedPage = parseInt(filters?.page || '0');
+  const parsedPage = Number(filters?.page) || 1;
 
   const page = parsedPage - 1;
 
   const take = 5;
-  // const skip = filters?.page ? page * take : 0;
   const skip = page * take;
-  // const skip = parsedPage * take;
 
   try {
     const [totalCount, transactions] = await db.$transaction([

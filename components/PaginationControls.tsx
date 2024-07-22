@@ -13,9 +13,10 @@ interface PaginationControlsProps {
     nextPage: boolean;
     previousPage: boolean;
   };
+  onPaginationChange: (page: number | undefined) => void;
 }
 
-const PaginationControls: React.FC<PaginationControlsProps> = ({ data }) => {
+const PaginationControls: React.FC<PaginationControlsProps> = ({ data, onPaginationChange }) => {
   const prevPage = data?.previousPage ? `?page=${data?.currentPage - 1}` : null
   const currentPage = (data?.currentPage || 0)
   const nextPage = data?.nextPage ? `?page=${data?.currentPage + 1}` : null
@@ -27,7 +28,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ data }) => {
           <PaginationContent>
             {prevPage && (
               <PaginationItem>
-                <PaginationPrevious href={prevPage} />
+                <PaginationPrevious onPaginationChange={onPaginationChange} href={prevPage} />
               </PaginationItem>
             )}
             <PaginationItem>
@@ -35,7 +36,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({ data }) => {
             </PaginationItem>
             {nextPage && (
               <PaginationItem>
-                <PaginationNext href={nextPage} />
+                <PaginationNext onPaginationChange={onPaginationChange} href={nextPage} />
               </PaginationItem>
             )}
           </PaginationContent>
